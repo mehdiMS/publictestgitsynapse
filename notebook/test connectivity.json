@@ -1,0 +1,89 @@
+{
+	"name": "test connectivity",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "mysparkpool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "453221cc-c854-4cc2-b196-57410b67f4f5"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/f88f3507-8774-4e17-8d33-1c42b607cbf4/resourceGroups/rg-synapse-ne/providers/Microsoft.Synapse/workspaces/syn-wkspc-flavor1/bigDataPools/mysparkpool",
+				"name": "mysparkpool",
+				"type": "Spark",
+				"endpoint": "https://syn-wkspc-flavor1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/mysparkpool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.4",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"microsoft": {
+						"language": "python"
+					}
+				},
+				"source": [
+					"%%pyspark\r\n",
+					"import socket\r\n",
+					"hostname = \"cunhasqlserver.database.windows.net\"\r\n",
+					"port = \"443\"\r\n",
+					"############################################################\r\n",
+					"def resolve_hostname(hostname):\r\n",
+					"    try:\r\n",
+					"        ip = socket.gethostbyname(hostname)\r\n",
+					"        print(f\"{hostname} resolved to {ip}.\")\r\n",
+					"        return ip\r\n",
+					"    except:\r\n",
+					"        print(f\"Unable to resolve hostname {hostname}.\")\r\n",
+					"        return None\r\n",
+					"############################################################\r\n",
+					"def is_port_open(hostname, port):\r\n",
+					"    try:\r\n",
+					"        sock = socket.create_connection((hostname, port), timeout=1)\r\n",
+					"        sock.close()\r\n",
+					"        print(f\"Port {port} is OPEN to {hostname}\")\r\n",
+					"    except socket.error:\r\n",
+					"        print(f\"Port {port} is CLOSED to {hostname}\")\r\n",
+					"############################################################\r\n",
+					"resolve_hostname(hostname)\r\n",
+					"is_port_open(hostname, port)"
+				],
+				"execution_count": 3
+			}
+		]
+	}
+}
